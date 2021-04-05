@@ -23,10 +23,10 @@ yarn package
 
 The application is developed with:
 
-- The use of excellant [Electron framework](https://www.electronjs.org/)
-- Reacj JS framework
+- The use of excellent [Electron framework](https://www.electronjs.org/)
+- React JS framework
 - Typescript
-- Excellant boilerplate project template from [https://github.com/electron-react-boilerplate/electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
+- Excellent boilerplate project template from [https://github.com/electron-react-boilerplate/electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
 
 ## Maintainers
 

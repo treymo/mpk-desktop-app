@@ -1,0 +1,14 @@
+.habitsContainer {
+  flex-grow: 1;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #616161;
+  margin: 10px 10px 0 10px;
+}
+
+.habitsHeader {
+  text-align: left;
+  margin-bottom: 10px;
+  vertical-align: middle;
+}

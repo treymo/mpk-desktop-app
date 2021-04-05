@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Board from '../components/Board';
+import HabitPanel from '../components/HabitPanel';
 import SideBar from '../components/SideBar';
 import styles from './HomePage.css';
 import SearchBox from '../components/SearchBox';
@@ -19,6 +20,7 @@ export default function HomePage() {
       </Box>
       <Box className={styles.content}>
         <Board />
+        <HabitPanel />
         <div className={styles.footer}>
           <SearchBox />
         </div>

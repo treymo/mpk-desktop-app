@@ -103,66 +103,68 @@ export default function Board() {
   });
 
   return (
-    <div className={styles.container} data-tid="container">
-      <DragDropContext onDragEnd={onDragEnd}>
-        {board.columns.map((column, index) => (
-          <Column
-            column={column}
-            cards={cardIdsToCardsList(column, board.cards)}
-            key={`column-${column.id}`}
-            index={index}
-            isLastColumn={index + 1 === board.columns.length}
+    <div>
+      <div className={styles.boardContainer} data-tid="boardContainer">
+        <DragDropContext onDragEnd={onDragEnd}>
+          {board.columns.map((column, index) => (
+            <Column
+              column={column}
+              cards={cardIdsToCardsList(column, board.cards)}
+              key={`column-${column.id}`}
+              index={index}
+              isLastColumn={index + 1 === board.columns.length}
+              tags={board.tags.byId}
+              onCardSelected={handleCardSelectedForAction}
+            />
+          ))}
+        </DragDropContext>
+        <Backdrop open={open} />
+        <SpeedDial
+          ariaLabel="SpeedDial tooltip example"
+          className={classes.speedDial}
+          icon={<SpeedDialIcon />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={open}
+        >
+          {board.columns.map((column) => (
+            <SpeedDialAction
+              key={column.title}
+              icon={<ViewColumn />}
+              tooltipTitle={column.title}
+              tooltipOpen
+              onClick={() => handleAdd(column)}
+            />
+          ))}
+        </SpeedDial>
+        {selectedColumn && (
+          <AddNewCardDialog
+            columnId={selectedColumn.id}
+            columnTitle={selectedColumn.title}
+            onAdd={handleAdd}
+            onClose={handleCancel}
             tags={board.tags.byId}
-            onCardSelected={handleCardSelectedForAction}
-          />
-        ))}
-      </DragDropContext>
-      <Backdrop open={open} />
-      <SpeedDial
-        ariaLabel="SpeedDial tooltip example"
-        className={classes.speedDial}
-        icon={<SpeedDialIcon />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-      >
-        {board.columns.map((column) => (
-          <SpeedDialAction
-            key={column.title}
-            icon={<ViewColumn />}
-            tooltipTitle={column.title}
-            tooltipOpen
-            onClick={() => handleAdd(column)}
-          />
-        ))}
-      </SpeedDial>
-      {selectedColumn && (
-        <AddNewCardDialog
-          columnId={selectedColumn.id}
-          columnTitle={selectedColumn.title}
-          onAdd={handleAdd}
-          onClose={handleCancel}
-          tags={board.tags.byId}
-        />
-      )}
-      {selectedCardAndAction && selectedCardAndAction.action === 'edit' && (
-        <EditCardDialog
-          card={selectedCardAndAction.card}
-          open
-          onClose={handleEditDialogClosed}
-          tags={board.tags.byId}
-        />
-      )}
-      {selectedCardAndAction &&
-        selectedCardAndAction.action === 'moveBetweenBoard' && (
-          <MoveCardToBoardDialog
-            open
-            card={selectedCardAndAction.card}
-            onConfirm={handleEditDialogClosed}
-            onCancel={handleEditDialogClosed}
           />
         )}
-      <DeadlineChecker board={board} />
+        {selectedCardAndAction && selectedCardAndAction.action === 'edit' && (
+          <EditCardDialog
+            card={selectedCardAndAction.card}
+            open
+            onClose={handleEditDialogClosed}
+            tags={board.tags.byId}
+          />
+        )}
+        {selectedCardAndAction &&
+          selectedCardAndAction.action === 'moveBetweenBoard' && (
+            <MoveCardToBoardDialog
+              open
+              card={selectedCardAndAction.card}
+              onConfirm={handleEditDialogClosed}
+              onCancel={handleEditDialogClosed}
+            />
+          )}
+        <DeadlineChecker board={board} />
+      </div>
     </div>
   );
 }
