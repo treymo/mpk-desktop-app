@@ -1,16 +1,18 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-import { Check, Clear, MoreVert } from '@material-ui/icons';
+import { Clear, MoreVert } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useDispatch } from 'react-redux';
 
 import styles from './HabitPanel.css';
-import { createHabit, Habit } from '../model/habit';
+//import { createHabit } from '../features/habits/habitSlice';
+import { createNewHabit, Habit } from '../model/habit';
 
 function showMoreOptionsDialog() {}
 
@@ -47,7 +49,7 @@ function habitDateRow(): JSX.Element {
   );
 }
 
-function habitHistoryColumns(clickOpenHandler): JSX.Element[] {
+function habitHistoryColumns(clickOpenHandler: () => void): JSX.Element[] {
   const cursor = new Date();
   const result = [];
 
@@ -68,13 +70,19 @@ function habitHistoryColumns(clickOpenHandler): JSX.Element[] {
 
 // TODO: this whole thing should re-render when a button is pressed. Props,
 // observers, etc. const [thing, setThing] = React.useState(false);
-function renderHabits(clickOpenHandler): JSX.Element[] {
+function renderHabits(dispatch, clickOpenHandler: () => void): JSX.Element[] {
   // TODO: load habits from store, turn to HTML
+  //dispatch(
+    //createHabit({
+      //title: 'New Habit!',
+      //description: 'this is something you should do',
+    //})
+  //);
   const habits: Habit[] = [
-    createHabit('Habit one', 'description', []),
-    createHabit('Habit two', 'description', []),
-    createHabit('Habit three', 'description', []),
-    createHabit('Habit four', 'description', []),
+    createNewHabit('Habit one', 'description'),
+    createNewHabit('Habit two', 'description'),
+    createNewHabit('Habit three', 'description'),
+    createNewHabit('Habit four', 'description'),
   ];
 
   const habitRows: JSX.Element[] = [];
@@ -91,7 +99,7 @@ function renderHabits(clickOpenHandler): JSX.Element[] {
   return habitRows;
 }
 
-export default function HabitPanel() {
+export default function HabitPanel(): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,7 +107,8 @@ export default function HabitPanel() {
   const handleClose = () => {
     setOpen(false);
   };
-  const habitRows = renderHabits(handleClickOpen);
+  const dispatch = useDispatch();
+  const habitRows = renderHabits(dispatch, handleClickOpen);
 
   return (
     <div className={styles.habitsContainer} data-tid="habitsContainer">
@@ -108,7 +117,7 @@ export default function HabitPanel() {
         <IconButton onClick={() => showMoreOptionsDialog()}>
           <MoreVert style={{ fontSize: 16 }} />
         </IconButton>
-        <Dialog open={open} onClose={handleClose} >
+        <Dialog open={open} onClose={handleClose}>
           <DialogTitle id="alert-dialog-title">You clicked a habit</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">

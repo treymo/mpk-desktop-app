@@ -2,24 +2,23 @@ import { v4 as uuidv4 } from 'uuid';
 
 export type DateTimeInMiliseconds = number;
 
+interface HabitDay {
+  date: Date;
+  completed: boolean;
+}
+
 export interface Habit {
   title: string;
   description: string;
   id: string;
   lastModified: DateTimeInMiliseconds;
   createdAt?: DateTimeInMiliseconds;
-  tags: Array<string>;
+  days: Array<HabitDay>; // end of list is most recent day.
   targetDaily: number;
   targetWeekly: number;
-  deadline?: DateTimeInMiliseconds;
-  pastDeadline?: boolean;
 }
 
-const createHabit = (
-  title: string,
-  description: string,
-  tags: Array<string>
-): Habit => {
+const createNewHabit = (title: string, description: string): Habit => {
   return {
     title,
     description,
@@ -28,8 +27,8 @@ const createHabit = (
     createdAt: Date.now(),
     targetDaily: -1,
     targetWeekly: 7,
-    tags,
+    days: new Array<HabitDay>(),
   };
 };
 
-export { createHabit };
+export { createNewHabit };
