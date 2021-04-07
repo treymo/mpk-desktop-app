@@ -43,9 +43,14 @@ const loadedData = (appDataPath: string, isDevelopment = false) => {
   });
 
   const boards = migrate(JSON.parse(fs.readFileSync(boardsFile, 'UTF-8')));
+  const habits = {
+    allIds: new Array<string>(),
+    byId: {},
+    thing: "TODO",
+  }
   const app = JSON.parse(fs.readFileSync(appFile, 'UTF-8'));
 
-  return { boards, app };
+  return { boards, habits, app };
 };
 
 export default loadedData;

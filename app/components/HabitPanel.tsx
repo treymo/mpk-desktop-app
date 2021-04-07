@@ -8,13 +8,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store';
 
 import styles from './HabitPanel.css';
-//import { createHabit } from '../features/habits/habitSlice';
+import { createHabit } from '../features/habits/habitSlice';
 import { createNewHabit, Habit } from '../model/habit';
 
 function showMoreOptionsDialog() {}
+
+const selectHabits = (state: RootState): Habit => {
+  return state.habits.allIds;
+};
 
 const isToday = (date: Date) => {
   const today = new Date();
@@ -68,23 +73,7 @@ function habitHistoryColumns(clickOpenHandler: () => void): JSX.Element[] {
   return result;
 }
 
-// TODO: this whole thing should re-render when a button is pressed. Props,
-// observers, etc. const [thing, setThing] = React.useState(false);
-function renderHabits(dispatch, clickOpenHandler: () => void): JSX.Element[] {
-  // TODO: load habits from store, turn to HTML
-  //dispatch(
-    //createHabit({
-      //title: 'New Habit!',
-      //description: 'this is something you should do',
-    //})
-  //);
-  const habits: Habit[] = [
-    createNewHabit('Habit one', 'description'),
-    createNewHabit('Habit two', 'description'),
-    createNewHabit('Habit three', 'description'),
-    createNewHabit('Habit four', 'description'),
-  ];
-
+function renderHabits(habits: Habit[], clickOpenHandler: () => void): JSX.Element[] {
   const habitRows: JSX.Element[] = [];
   habitRows.push(habitDateRow());
   habits.forEach((habit: Habit) => {
@@ -100,20 +89,38 @@ function renderHabits(dispatch, clickOpenHandler: () => void): JSX.Element[] {
 }
 
 export default function HabitPanel(): JSX.Element {
+  // TODO: get all Habits
+  //const habits = useSelector(selectHabits);
+  const habits: Habit[] = [
+    createNewHabit('Habit one', 'description'),
+    createNewHabit('Habit two', 'description'),
+    createNewHabit('Habit three', 'description'),
+    createNewHabit('Habit four', 'description'),
+  ];
+
+  const thing = useSelector((state) => state.habits.thing);
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
   const handleClickOpen = () => {
     setOpen(true);
+    // TODO: remove
+    dispatch(
+      createHabit({
+        title: 'New Habit!',
+        description: 'this is something you should do',
+      })
+    );
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const dispatch = useDispatch();
-  const habitRows = renderHabits(dispatch, handleClickOpen);
+  const habitRows = renderHabits(habits, handleClickOpen);
 
   return (
     <div className={styles.habitsContainer} data-tid="habitsContainer">
       <div className={styles.habitsHeader}>
-        <span>Habits</span>
+        <span>Habits {thing}</span>
         <IconButton onClick={() => showMoreOptionsDialog()}>
           <MoreVert style={{ fontSize: 16 }} />
         </IconButton>

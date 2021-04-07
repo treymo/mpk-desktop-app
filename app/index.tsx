@@ -16,7 +16,11 @@ const initiateApplication = (configuration) => {
   );
 
   const store = configuredStore(
-    { boards: loadedAppData.boards, app: loadedAppData.app },
+    {
+      boards: loadedAppData.boards,
+      habits: loadedAppData.habits,
+      app: loadedAppData.app,
+    },
     configuration.appDataFolder,
     configuration.isDevelopment
   );

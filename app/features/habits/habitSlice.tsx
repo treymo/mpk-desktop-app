@@ -1,19 +1,15 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
 import { Habit, createNewHabit } from '../../model/habit';
 
-// TODO: these are actions that can be sent via a "Dispatch" from elsewhere in
-// the app? See AddNewCardDialog for dispatch(addCard()) example
 const habitSlice: Slice = createSlice({
-  name: 'habit',
+  name: 'habits',
   initialState: {},
   reducers: {
     createHabit(state, action) {
       const { title, description } = action.payload;
       const newHabit: Habit = createNewHabit(title, description);
-
-      // TODO: persistence? Do I just need to put the habits into the state to get
-      // it to persist?  Any other changs?
       state.allIds.push(newHabit.id);
+      state.thing = title;
       state.byId[newHabit.id] = newHabit;
     },
     deleteHabit(state, action) {
@@ -37,9 +33,9 @@ const habitSlice: Slice = createSlice({
 
 export const {
   createHabit,
-  updateCard,
   deleteHabit,
   renameHabit,
+  updateHabitDay,
 } = habitSlice.actions;
 
 export default habitSlice.reducer;
